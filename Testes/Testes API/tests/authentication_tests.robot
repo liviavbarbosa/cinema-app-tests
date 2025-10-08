@@ -1,38 +1,38 @@
 *** Settings ***
-Documentation    Cenários de teste para o módulo de autenticação do sistema
+Documentation    Cenários de teste para o módulo de autenticação da API
 Resource         ../resources/support/common/common.resource
 
 Suite Setup    Criar Sessao
 
 *** Test Cases ***
 CT001: Login de usuário com credenciais válidas
-    [Tags]       login
+    [Tags]       auth
     ${user}=     Criar Usuario Comum
     Inserir usuario no database     ${user}
 
     POST Endpoint /auth/login       ${user}
 
+    Remover usuario do database    ${user}
+
     Validar Status Code             200
     Validar se Obteve Sucesso
     Validar Conteudo da Resposta    _id    name    email    role    token
 
-    Remover usuario do database    ${user}
-
 
 CT005: Registro de usuário com campos válidos
-    [Tags]       register
+    [Tags]       auth
     ${user}=     Criar Usuario Comum
     POST Endpoint /auth/register    ${user}
+
+    Remover usuario do database    ${user}
 
     Validar Status Code             201
     Validar se Obteve Sucesso
     Validar Conteudo da Resposta    _id    name    email    role    token
 
-    Remover usuario do database    ${user}
-
 
 CT009: Registro de usuário com e-mail já utilizado
-    [Tags]       register
+    [Tags]       auth
     ${user}=     Criar Usuario Comum
     Set To Dictionary    ${user}    email=usuariocomum@teste.com
     POST Endpoint /auth/register    ${user}
@@ -43,22 +43,22 @@ CT009: Registro de usuário com e-mail já utilizado
 
 
 CT010: Busca de usuário atual com token válido
-    [Tags]       me 
+    [Tags]       auth 
     ${user}=     Criar Usuario Comum
     Inserir usuario no database    ${user}
 
     POST Endpoint /auth/login      ${user}
     GET Endpoint /auth/me          ${TOKEN} 
 
+    Remover usuario do database    ${user}
+
     Validar Status Code             200
     Validar se Obteve Sucesso
     Validar Conteudo da Resposta    _id    name    email    role
 
-    Remover usuario do database    ${user}
-
 
 CT012: Atualização de usuário com campos válidos
-    [Tags]    profile
+    [Tags]    auth
     ${user}=     Criar Usuario Comum
     Inserir usuario no database    ${user}
 
@@ -67,8 +67,8 @@ CT012: Atualização de usuário com campos válidos
     ${user_updated}=              Criar Dados para Atualizar Usuario    ${user}
     PUT Endpoint /auth/profile    ${user_updated}    ${TOKEN}
 
+    Remover usuario do database    ${user}
+
     Validar Status Code             200
     Validar se Obteve Sucesso
     Validar Conteudo da Resposta    _id    name    email    role
-
-    Remover usuario do database    ${user}

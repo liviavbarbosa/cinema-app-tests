@@ -1,7 +1,6 @@
 *** Settings ***
 Documentation    Keywords necessárias para executar os cenários de teste
 Library          RequestsLibrary
-Library          FakerLibrary
 Library          Collections
 Library          ../libs/database.py
 
@@ -10,19 +9,12 @@ Resource         ../../keywords/authentication/login.resource
 Resource         ../../keywords/authentication/register.resource
 Resource         ../../keywords/authentication/me.resource
 Resource         ../../keywords/authentication/profile.resource
+Resource         ../../keywords/movies/movies.resource
+Resource         ../fixtures/dynamics.resource
 
 *** Keywords ***
 Criar Sessao
     Create Session    cinema-app    ${URL_BASE}
-
-Criar Usuario Comum
-    ${name}       FakerLibrary.Name
-    ${email}      FakerLibrary.Free Email
-    &{user}    Create Dictionary    
-    ...           name=${name}
-    ...           email=${email}
-    ...           password=teste123
-    RETURN        ${user}
 
 Validar Status Code 
     [Arguments]                    ${status_code}
@@ -45,6 +37,17 @@ Validar se nao Obteve Sucesso
 
 Validar Conteudo da Resposta    
     [Arguments]           @{dados}
-    FOR    ${campo}    IN    @{dados}
-        Dictionary Should Contain Key    ${response.json()["data"]}    ${campo}    
-    END  
+    ${data}=    Set Variable    ${response.json()["data"]}
+    
+    ${is_list}=    Evaluate    isinstance($data, list)
+    IF    ${is_list}
+        FOR    ${item}    IN    @{data}
+            FOR    ${campo}    IN    @{dados}
+                Dictionary Should Contain Key    ${item}    ${campo}
+            END
+        END
+    ELSE
+        FOR    ${campo}    IN    @{dados}
+            Dictionary Should Contain Key    ${data}    ${campo}    
+        END  
+    END
