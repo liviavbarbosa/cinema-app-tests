@@ -1,3 +1,4 @@
+from bson import ObjectId
 from robot.api.deco import keyword
 from pymongo import MongoClient
 import bcrypt
@@ -95,3 +96,36 @@ def get_theater_id(theater):
     theaters = db["theaters"]
     id_theater = theaters.find_one({"name": theater["name"]})
     return id_theater["_id"] 
+
+
+@keyword('Remover sessao do database')
+def remove_session(id_session):
+    sessions = db["sessions"]
+    sessions.delete_many({'_id': id_session})
+
+
+@keyword('Inserir sessao no database')
+def insert_session(session):
+    doc = {
+        "movie": session["movie"],
+        "theater": session["theater"],
+        "datetime": session["datetime"],
+        "fullPrice": session["fullPrice"],
+        "halfPrice": session["halfPrice"]
+    }
+    sessions = db['sessions']
+    sessions.insert_one(doc)
+
+
+@keyword('Pegar id da sessao')
+def get_session_id(session):
+    sessions = db["sessions"]
+
+    movie_id = ObjectId(str(session["movie"]))
+    theater_id = ObjectId(str(session["theater"]))
+    
+    session_doc = sessions.find_one({
+        "movie": movie_id,
+        "theater": theater_id
+    })
+    return session_doc["_id"] 

@@ -11,6 +11,7 @@ Resource         ../../keywords/authentication/me.resource
 Resource         ../../keywords/authentication/profile.resource
 Resource         ../../keywords/movies/movies.resource
 Resource         ../../keywords/theaters/theaters.resource
+Resource         ../../keywords/sessions/sessions.resource
 Resource         ../fixtures/dynamics.resource
 
 *** Keywords ***
