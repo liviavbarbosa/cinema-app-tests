@@ -71,3 +71,27 @@ def get_movie_id(movie):
     movies = db["movies"]
     id_movie = movies.find_one({"title": movie["title"]})
     return id_movie["_id"] 
+
+
+@keyword('Remover teatro do database')
+def remove_theater(id_teatro):
+    teatros = db["theaters"]
+    teatros.delete_many({'_id': id_teatro})
+
+
+@keyword('Inserir teatro no database')
+def insert_theater(theater):
+    doc = {
+        "name": theater["name"],
+        "capacity": theater["capacity"],
+        "type": theater["type"]
+    }
+    theaters = db['theaters']
+    theaters.insert_one(doc)
+
+
+@keyword('Pegar id do teatro')
+def get_theater_id(theater):
+    theaters = db["theaters"]
+    id_theater = theaters.find_one({"name": theater["name"]})
+    return id_theater["_id"] 
