@@ -43,7 +43,6 @@ CT021: Cadastro de filme com campos válidos como usuário administrador
     ${movie}=    Criar Filme
     POST Endpoint /movies    ${movie}       ${TOKEN}
 
-    ${id_movie}=        Pegar id do filme           ${movie}
     Remover filme do database       ${id_movie}
     Remover usuario do database     ${user}
 
@@ -78,8 +77,7 @@ CT025: Atualização de filme como usuário administrador com campos válidos
     POST Endpoint /auth/login               ${user}
 
     ${movie}=    Criar Filme
-    Inserir filme no database               ${movie} 
-    ${id_movie}=    Pegar id do filme       ${movie} 
+    POST Endpoint /movies    ${movie}       ${TOKEN}
 
     ${movie_updated}=    Criar Filme
     PUT Endpoint /movies/id    ${id_movie}    ${movie_updated}    ${TOKEN}
@@ -101,9 +99,8 @@ CT030: Exclusão de filme como usuário administrador
     POST Endpoint /auth/login               ${user}
 
     ${movie}=    Criar Filme
-    Inserir filme no database               ${movie} 
+    POST Endpoint /movies    ${movie}       ${TOKEN}
 
-    ${id_movie}=    Pegar id do filme       ${movie} 
     DELETE Endpoint /movies/id              ${id_movie}    ${TOKEN}
 
     Remover filme do database      ${id_movie}
@@ -136,9 +133,9 @@ CT032: Exclusão de filme como usuário regular
     POST Endpoint /auth/login               ${user}
 
     ${movie}=    Criar Filme
-    Inserir filme no database               ${movie} 
+    Inserir filme no database               ${movie}   
 
-    ${id_movie}=    Pegar id do filme       ${movie} 
+    Pegar id do filme                       ${movie}        
     DELETE Endpoint /movies/id              ${id_movie}    ${TOKEN}
 
     Remover filme do database      ${id_movie}
