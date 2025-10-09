@@ -62,10 +62,10 @@ CT012: Atualização de usuário com campos válidos
     ${user}=     Criar Usuario Comum
     Inserir usuario no database    ${user}
 
-    POST Endpoint /auth/login    ${user}
+    POST Endpoint /auth/login      ${user}
 
-    ${user_updated}=              Criar Dados para Atualizar Usuario    ${user}
-    PUT Endpoint /auth/profile    ${user_updated}    ${TOKEN}
+    ${user_updated}=               Criar Dados para Atualizar Usuario    ${user}
+    PUT Endpoint /auth/profile     ${user_updated}    ${TOKEN}
 
     Remover usuario do database    ${user}
 
