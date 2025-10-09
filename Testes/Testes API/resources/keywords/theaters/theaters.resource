@@ -16,6 +16,10 @@ POST Endpoint /theaters
     [Arguments]    ${theater}           ${token}  
     &{header}      Create Dictionary       Authorization=Bearer ${token}
     ${response}    POST On Session    cinema-app       /theaters      headers=${header}    json=${theater}      expected_status=any
+    ${id_theater}=      Evaluate           $response.json().get("data", {}).get("_id")
+    IF    "${id_theater}" != "None"
+        Set Test Variable    ${id_theater}    ${id_theater}
+    END
     Set Test Variable        ${response}
 
 PUT Endpoint /theaters/id

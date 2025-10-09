@@ -38,7 +38,6 @@ CT081: Cadastro de teatro com campos válidos como usuário administrador
     ${theater}=    Criar Teatro
     POST Endpoint /theaters    ${theater}    ${TOKEN}
 
-    ${id_theater}=    Pegar id do Teatro     ${theater}
     Remover teatro do database               ${id_theater}
     Remover usuario do database              ${user}
 
@@ -55,13 +54,12 @@ CT086: Atualização de teatro como usuário administrador com campos válidos
     POST Endpoint /auth/login               ${user}
 
     ${theater}=    Criar Teatro
-    Inserir teatro no database               ${theater} 
-    ${id_theater}=    Pegar id do teatro     ${theater} 
+    POST Endpoint /theaters    ${theater}    ${TOKEN}
 
     ${theater_updated}=    Criar Teatro
     PUT Endpoint /theaters/id      ${id_theater}    ${theater_updated}    ${TOKEN}
 
-    Remover teatro do database      ${id_theater}
+    Remover teatro do database     ${id_theater}
     Remover usuario do database    ${user}
 
     Validar Status Code             200
@@ -77,10 +75,8 @@ CT092: Exclusão de teatro como usuário administrador
     POST Endpoint /auth/login               ${user}
 
     ${theater}=    Criar Teatro
-    Inserir teatro no database              ${theater} 
-
-    ${id_theater}=    Pegar id do teatro    ${theater} 
-    DELETE Endpoint /theaters/id            ${id_theater}    ${TOKEN}
+    POST Endpoint /theaters    ${theater}    ${TOKEN}
+    DELETE Endpoint /theaters/id             ${id_theater}    ${TOKEN}
 
     Remover teatro do database      ${id_theater}
     Remover usuario do database     ${user}
@@ -89,4 +85,18 @@ CT092: Exclusão de teatro como usuário administrador
     Validar se Obteve Sucesso
     Validar se a Resposta Contem a Mensagem "Theater removed"
 
-# CT096: Exclusão de teatro com sessões ativas
+CT096: Exclusão de teatro com sessões ativas
+    [Tags]    theaters
+    ${user}=     Criar Usuario Comum
+    Inserir usuario no database             ${user}
+    Atualizar role do usuario para admin    ${user["email"]}
+    POST Endpoint /auth/login               ${user}
+
+    Criar Sessao de Cinema Completa
+    DELETE Endpoint /theaters/id    ${id_theater}    ${TOKEN}
+    
+    Remover Dados da Sessao    ${id_movie}    ${id_theater}    ${id_session}    ${user}
+
+    Validar Status Code             409
+    Validar se nao Obteve Sucesso
+    Validar se a Resposta Contem a Mensagem "Cannot delete theater with active sessions"
