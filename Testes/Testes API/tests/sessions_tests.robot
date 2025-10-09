@@ -47,25 +47,9 @@ CT058: Cadastro de sessão com campos válidos como usuário administrador
     Atualizar role do usuario para admin    ${user["email"]}
     POST Endpoint /auth/login               ${user}
 
-    ${movie}=        Criar Filme
-    Inserir filme no database     ${movie}
-
-    ${theater}=      Criar Teatro
-    Inserir teatro no database    ${theater}
-
-    ${id_movie}=        Pegar id do filme         ${movie}
-    ${id_theater}=      Pegar id do teatro        ${theater}
-    ${session}=         Criar Sessao de Cinema    ${id_movie}    ${id_theater}
-
-    Set To Dictionary    ${session}    movie=${id_movie}              theater=${id_theater}
-    Set To Dictionary    ${session}    movie=${id_movie.__str__()}    theater=${id_theater.__str__()}
-
-    POST Endpoint /sessions       ${session}      ${TOKEN}
+    Criar Sessao de Cinema Completa
     
-    ${id_session}=        Pegar id da sessao        ${session}
-    Remover filme do database     ${id_movie}
-    Remover teatro do database    ${id_theater} 
-    Remover sessao do database    ${id_session} 
+    Remover Dados da Sessao    ${id_movie}    ${id_theater}    ${id_session}    ${user}
 
     Validar Status Code             201
     Validar se Obteve Sucesso
@@ -80,28 +64,11 @@ CT064: Atualização de sessão válida como usuário administrador
     Atualizar role do usuario para admin    ${user["email"]}
     POST Endpoint /auth/login               ${user}
 
-    ${movie}=        Criar Filme
-    Inserir filme no database     ${movie}
-
-    ${theater}=      Criar Teatro
-    Inserir teatro no database    ${theater}
-
-    ${id_movie}=        Pegar id do filme         ${movie}
-    ${id_theater}=      Pegar id do teatro        ${theater}
-    ${session}=         Criar Sessao de Cinema    ${id_movie}    ${id_theater}
-    Inserir sessao no database    ${session}
-
-    ${session_updated}=         Criar Sessao de Cinema    ${id_movie}    ${id_theater}
-
-    Set To Dictionary    ${session_updated}    movie=${id_movie}              theater=${id_theater}
-    Set To Dictionary    ${session_updated}    movie=${id_movie.__str__()}    theater=${id_theater.__str__()}
-
-    ${id_session}=        Pegar id da sessao          ${session}
-    PUT Endpoint /sessions/id       ${id_session}     ${session_updated}      ${TOKEN}
+    Criar Sessao de Cinema Completa
+    ${session_updated}=         Criar Sessao de Cinema            ${id_movie}    ${id_theater}
+    PUT Endpoint /sessions/id     ${id_session}    ${session_updated}        ${TOKEN}
     
-    Remover filme do database     ${id_movie}
-    Remover teatro do database    ${id_theater} 
-    Remover sessao do database    ${id_session} 
+    Remover Dados da Sessao    ${id_movie}    ${id_theater}    ${id_session}    ${user}
 
     Validar Status Code             200
     Validar se Obteve Sucesso
@@ -109,7 +76,27 @@ CT064: Atualização de sessão válida como usuário administrador
     ...                             halfPrice        seats      createdAt
     
 
-# CT069: Atualização de sessão com reservas
+CT069: Atualização de sessão com reservas
+    [Tags]    sessions
+    ${user}=     Criar Usuario Comum
+    Inserir usuario no database             ${user}
+    Atualizar role do usuario para admin    ${user["email"]}
+    POST Endpoint /auth/login               ${user}
+    
+    Criar Sessao de Cinema Completa
+    ${reservation}=      Criar Reserva              ${id_session}
+    Set To Dictionary    ${reservation}    session=${id_session} 
+    Set To Dictionary    ${reservation}    session=${id_session.__str__()}
+    POST Endpoint /reservations            ${reservation}        ${TOKEN}
+
+    ${session_updated}=         Criar Sessao de Cinema            ${id_movie}    ${id_theater}
+    PUT Endpoint /sessions/id     ${id_session}    ${session_updated}        ${TOKEN}
+    
+    Remover Dados da Reserva    ${id_movie}    ${id_theater}   ${id_session}    ${id_reservation}   ${user}
+
+    Validar Status Code             409
+    Validar se nao Obteve Sucesso
+    Validar se a Resposta Contem a Mensagem "Session has reservations, cannot update"
 
 
 CT070: Reset de sessão válida como usuário administrador
@@ -119,28 +106,11 @@ CT070: Reset de sessão válida como usuário administrador
     Atualizar role do usuario para admin    ${user["email"]}
     POST Endpoint /auth/login               ${user}
 
-    ${movie}=        Criar Filme
-    Inserir filme no database     ${movie}
-
-    ${theater}=      Criar Teatro
-    Inserir teatro no database    ${theater}
-
-    ${id_movie}=        Pegar id do filme         ${movie}
-    ${id_theater}=      Pegar id do teatro        ${theater}
-    ${session}=         Criar Sessao de Cinema    ${id_movie}    ${id_theater}
-    Inserir sessao no database    ${session}
-
-    ${session_updated}=         Criar Sessao de Cinema    ${id_movie}    ${id_theater}
-
-    Set To Dictionary    ${session_updated}    movie=${id_movie}              theater=${id_theater}
-    Set To Dictionary    ${session_updated}    movie=${id_movie.__str__()}    theater=${id_theater.__str__()}
-
-    ${id_session}=        Pegar id da sessao          ${session}
-    PUT Endpoint /sessions/id/reset-seats      ${id_session}     ${TOKEN}
+    Criar Sessao de Cinema Completa
+    ${session_updated}=         Criar Sessao de Cinema           ${id_movie}    ${id_theater}
+    PUT Endpoint /sessions/id/reset-seats         ${id_session}                 ${TOKEN}
     
-    Remover filme do database     ${id_movie}
-    Remover teatro do database    ${id_theater} 
-    Remover sessao do database    ${id_session} 
+    Remover Dados da Sessao    ${id_movie}    ${id_theater}    ${id_session}    ${user}
 
     Validar Status Code             200
     Validar se Obteve Sucesso
@@ -155,22 +125,10 @@ CT074: Exclusão de sessão como usuário administrador
     Atualizar role do usuario para admin    ${user["email"]}
     POST Endpoint /auth/login               ${user}
 
-    ${movie}=        Criar Filme
-    Inserir filme no database     ${movie}
-
-    ${theater}=      Criar Teatro
-    Inserir teatro no database    ${theater}
-
-    ${id_movie}=        Pegar id do filme         ${movie}
-    ${id_theater}=      Pegar id do teatro        ${theater}
-    ${session}=         Criar Sessao de Cinema    ${id_movie}    ${id_theater}
-    Inserir sessao no database    ${session}
-    
-    ${id_session}=        Pegar id da sessao        ${session}
+    Criar Sessao de Cinema Completa
     DELETE Endpoint /sessions/id     ${id_session}    ${TOKEN}
 
-    Remover filme do database     ${id_movie}
-    Remover teatro do database    ${id_theater} 
+    Remover Dados da Sessao    ${id_movie}    ${id_theater}    ${EMPTY}    ${user}
 
     Validar Status Code             200
     Validar se Obteve Sucesso
@@ -193,8 +151,7 @@ CT075: Exclusão de sessão como visitante
     ${id_session}=        Pegar id da sessao        ${session}
     DELETE Endpoint /sessions/id     ${id_session}    ${EMPTY}
 
-    Remover filme do database     ${id_movie}
-    Remover teatro do database    ${id_theater} 
+    Remover Dados da Sessao    ${id_movie}    ${id_theater}    ${EMPTY}    ${EMPTY}
 
     Validar Status Code             401
     Validar se nao Obteve Sucesso
@@ -221,12 +178,30 @@ CT076: Exclusão de sessão como usuário regular
     ${id_session}=        Pegar id da sessao        ${session}
     DELETE Endpoint /sessions/id     ${id_session}    ${TOKEN}
 
-    Remover filme do database     ${id_movie}
-    Remover teatro do database    ${id_theater} 
+    Remover Dados da Sessao    ${id_movie}    ${id_theater}    ${id_session}    ${user}
 
     Validar Status Code             403
     Validar se nao Obteve Sucesso
     Validar se a Resposta Contem a Mensagem "User role user is not authorized to access this route"
 
 
-# CT078: Exclusão de sessão com reservas confirmadas
+CT078: Exclusão de sessão com reservas confirmadas
+    [Tags]    sessions
+    ${user}=     Criar Usuario Comum
+    Inserir usuario no database             ${user}
+    Atualizar role do usuario para admin    ${user["email"]}
+    POST Endpoint /auth/login               ${user}
+    
+    Criar Sessao de Cinema Completa
+    ${reservation}=      Criar Reserva              ${id_session}
+    Set To Dictionary    ${reservation}    session=${id_session} 
+    Set To Dictionary    ${reservation}    session=${id_session.__str__()}
+    POST Endpoint /reservations            ${reservation}        ${TOKEN}
+
+    DELETE Endpoint /sessions/id     ${id_session}    ${TOKEN}
+    
+    Remover Dados da Reserva    ${id_movie}    ${id_theater}   ${id_session}    ${id_reservation}   ${user}
+
+    Validar Status Code             409
+    Validar se nao Obteve Sucesso
+    Validar se a Resposta Contem a Mensagem "Cannot delete session with confirmed reservations"
