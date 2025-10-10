@@ -10,6 +10,7 @@ Resource         ../../keywords/authentication/register.resource
 Resource         ../../keywords/authentication/me.resource
 Resource         ../../keywords/authentication/profile.resource
 Resource         ../../keywords/movies/movies.resource
+Resource         ../../keywords/theaters/theaters.resource
 Resource         ../fixtures/dynamics.resource
 
 *** Keywords ***

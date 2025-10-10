@@ -12,6 +12,15 @@ Criar Usuario Comum
     ...           password=teste123
     RETURN        ${user}
 
+Criar Dados para Atualizar Usuario
+    [Arguments]    ${user}
+    ${name}        FakerLibrary.Name
+    &{user}        Create Dictionary    
+    ...            name=${name}
+    ...            currentPassword=${user["password"]}
+    ...            newPassword=mudada123
+    RETURN         ${user}
+
 Criar Filme
     ${title}               FakerLibrary.Word    
     ${synopsis}            FakerLibrary.Paragraph
@@ -33,3 +42,15 @@ Criar Filme
     ...           releaseDate=${releaseDate}
     
     RETURN        ${movie}
+
+Criar Teatro
+    ${name}               FakerLibrary.Name    
+    ${capacity}           FakerLibrary.Random Int
+    ${type}               Evaluate    random.choice(['standard', 'VIP', 'IMAX', '3D'])    random
+
+    &{theater}      Create Dictionary    
+    ...             name=${name}
+    ...             capacity=${capacity}
+    ...             type=${type}
+    
+    RETURN        ${theater}
