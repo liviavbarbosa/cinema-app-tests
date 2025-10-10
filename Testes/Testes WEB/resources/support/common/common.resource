@@ -13,7 +13,6 @@ Resource         ../../pages/LoginPage.resource
 Resource         ../../pages/MoviesPage.resource
 Resource         ../../pages/RegisterPage.resource
 Resource         ../../pages/ProfilePage.resource
-Resource         ../../pages/ReservationPage.resource
 Resource         ../../pages/components/Alert.resource
 
 *** Keywords ***
