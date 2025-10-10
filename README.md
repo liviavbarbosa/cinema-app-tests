@@ -9,6 +9,7 @@ Este repositório é dedicado aos testes funcionais de API e WEB do Cinema App, 
 
 🔗 [Relatório de Issues](https://github.com/liviavbarbosa/cinema-app-tests/blob/main/Mapeamento%20de%20Issues%20e%20Melhorias.pdf) 
 
+
 ## Mapa mental da aplicação
 Para compreender melhor a aplicação, foram realizados dois mapas mentais: um para a API e outro para as páginas do front-end:
 
@@ -24,6 +25,7 @@ Para compreender melhor a aplicação, foram realizados dois mapas mentais: um p
 - MongoDB (local)
 - Robot Framework
 
+
 ## Como utilizar a aplicação
 1. Clone o repositório back-end da aplicação: ```git clone https://github.com/juniorschmitz/cinema-challenge-back```
 2. Clone o repositório front-end da aplicação: ```git clone https://github.com/juniorschmitz/cinema-challenge-front```
@@ -38,11 +40,15 @@ MONGODB_URI=mongodb://localhost:27017/cinema-app
 
 6. Execute ```npm start``` em ambos os terminais
 
+
 ## Configuração e Execução dos Testes
 1. Clone o repositório
+   
 Abra o terminal e clone o repositório com o seguinte comando:
 
-```git clone https://github.com/liviavbarbosa/cinema-app-tests```
+```
+git clone https://github.com/liviavbarbosa/cinema-app-tests
+```
 
 2. Para executar, entre em uma das pastas (Testes API ou Testes WEB) e rode o seguinte comando:
 
@@ -50,13 +56,15 @@ Abra o terminal e clone o repositório com o seguinte comando:
 robot -d results tests
 ```
 
+
 ## Sobre a Autora
 Olá! Sou Lívia Viana Barbosa!
 
 Tenho 20 anos e sou estudante do 6º semestre do curso de Engenharia de Software na Universidade Federal do Pampa, Campus Alegrete - RS.
 
+
 ## Agradecimentos
-Agradeço a Amanda Cardoso de Almeida, Jacques de Jesus Figueredo e Rafael Túlio pelo apoio no desenvolvimento das atividades e auxílio nas dúvidas.
+Agradeço a Amanda Cardoso de Almeida, Jacques de Jesus Figueredo e Rafael Túlio, pelo apoio no desenvolvimento das atividades e auxílio nas dúvidas.
 
 Também agradeço aos SMs Lucas Alves Costa e Samantha Antunes de Resende Firmino, os quais estiveram sempre disponíveis para conversar e dar apoio ao time sempre que necessário.
 
