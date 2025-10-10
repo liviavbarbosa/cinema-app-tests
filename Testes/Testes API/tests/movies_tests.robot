@@ -135,7 +135,7 @@ CT032: Exclusão de filme como usuário regular
     ${movie}=    Criar Filme
     Inserir filme no database               ${movie}   
 
-    Pegar id do filme                       ${movie}        
+    ${id_movie}=    Pegar id do filme                       ${movie}        
     DELETE Endpoint /movies/id              ${id_movie}    ${TOKEN}
 
     Remover filme do database      ${id_movie}

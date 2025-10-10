@@ -107,6 +107,4 @@ CT051: Exclusão de reserva como usuário administrador
 
     Validar Status Code    200
     Validar se Obteve Sucesso
-    Validar Conteudo da Resposta    _id     user     session          totalPrice     
-    ...                             status        paymentStatus    paymentMethod    paymentDate    
-    ...                             createdAt
+    Validar se a Resposta Contem a Mensagem "Reservation removed"
