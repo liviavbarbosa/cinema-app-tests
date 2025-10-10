@@ -11,6 +11,9 @@ Resource         ../../keywords/authentication/me.resource
 Resource         ../../keywords/authentication/profile.resource
 Resource         ../../keywords/movies/movies.resource
 Resource         ../../keywords/theaters/theaters.resource
+Resource         ../../keywords/sessions/sessions.resource
+Resource         ../../keywords/reservations/reservations.resource
+Resource         ../../keywords/users/users.resource
 Resource         ../fixtures/dynamics.resource
 
 *** Keywords ***
@@ -21,12 +24,6 @@ Validar Status Code
     [Arguments]                    ${status_code}
     Should Be True                 ${response.status_code}==${status_code}
     
-Validar se a Resposta Contem "${palavra}"
-    Should Contain        ${response.json()}                ${palavra}
-
-Validar se a Resposta nao Contem "${palavra}"
-    Should Not Contain    ${response.json()}                ${palavra}
-
 Validar se a Resposta Contem a Mensagem "${mensagem}"
     Should Contain        ${response.json()["message"]}     ${mensagem}
 

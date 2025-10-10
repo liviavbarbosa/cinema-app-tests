@@ -54,3 +54,20 @@ Criar Teatro
     ...             type=${type}
     
     RETURN        ${theater}
+
+Criar Sessao de Cinema
+    [Arguments]    ${movie_id}    ${theater_id}
+    ${datetime}           FakerLibrary.Date Time   
+    ${fullPrice}          FakerLibrary.Random Int
+    ${halfPrice}          FakerLibrary.Random Int
+
+    ${datetime_str}=    Convert To String    ${datetime}
+
+    &{session}      Create Dictionary    
+    ...             movie=${movie_id}
+    ...             theater=${theater_id}
+    ...             datetime=${datetime_str}
+    ...             fullPrice=${fullPrice}
+    ...             halfPrice=${halfPrice}
+    
+    RETURN        ${session}
