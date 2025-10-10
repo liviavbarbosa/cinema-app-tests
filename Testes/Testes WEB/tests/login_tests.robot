@@ -2,7 +2,8 @@
 Documentation    Cenários de teste para o módulo de login 
 Resource         ../resources/support/common/common.resource
 
-Suite Setup    Criar Sessao
+Suite Setup       Criar Sessao
+Suite Teardown    Take Screenshot
 
 *** Test Cases ***
 CT001: Login de usuário com credenciais válidas

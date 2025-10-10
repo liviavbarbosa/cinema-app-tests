@@ -2,7 +2,8 @@
 Documentation    Cenários de teste para o módulo de cadastro 
 Resource         ../resources/support/common/common.resource
 
-Suite Setup    Criar Sessao
+Suite Setup       Criar Sessao
+Suite Teardown    Take Screenshot
 
 *** Test Cases ***
 CT005: Registro de usuário com campos válidos
